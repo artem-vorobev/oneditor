@@ -14,18 +14,13 @@ function getFiles($rootDir) {
   foreach ($dirs as $n => $dir) {
     $dirs[$n] = [
       'isDirectory' => true,
-      'path' => $dir,
-      'name' => basename($dir),
-      'files' => [],
-      'isOpened' => false
+      'path' => $dir
     ];
   }
   foreach ($files as $n => $file) {
     $files[$n] = [
       'isDirectory' => false,
       'path' => $file,
-      'name' => basename($file),
-      'extension' => strtolower(pathinfo($file, PATHINFO_EXTENSION))
     ];
   }
   return array_merge($dirs, $files);

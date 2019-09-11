@@ -7,12 +7,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Editor</title>
+  <title>Oneditor</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans:400,700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/material.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuex"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/xml/xml.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/clike/clike.min.js"></script>
@@ -25,7 +26,6 @@
 <body>
   <div id="root"></div>
   <script>
-    window.ROOT_DIR = '<?=$_SERVER['DOCUMENT_ROOT']?>';
     window.STATE = <?=json_encode($state, true)?>;
   </script>
   <script src="/frontend/build/build.js"></script>

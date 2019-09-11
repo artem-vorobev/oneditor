@@ -91,17 +91,15 @@ export default {
           lineWrapping: true
         }
       );
-      if (cm.keyMap.default == cm.keyMap.macDefault) {
-        cm.addKeyMap({'Cmd-S': component.save});
-        cm.addKeyMap({'Cmd-Shift-S': component.saveAs});
-      } else {
-        cm.addKeyMap({'Ctrl-S': component.save});
-        cm.addKeyMap({'Ctrl-Shift-S': component.saveAs});
-      }
-    },
-    function() {
-      alert('Error! Check the internet connection.');
-    });
+      // if (cm.keyMap.default == cm.keyMap.macDefault) {
+      //   cm.addKeyMap({'Cmd-S': component.save});
+      //   cm.addKeyMap({'Cmd-Shift-S': component.saveAs});
+      // } else {
+      //   cm.addKeyMap({'Ctrl-S': component.save});
+      //   cm.addKeyMap({'Ctrl-Shift-S': component.saveAs});
+      // }
+    })
+    .catch(e => console.dir(e));
   }
 
 }

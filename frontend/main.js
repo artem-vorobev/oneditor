@@ -1,8 +1,10 @@
-import Editor from './Editor.vue';
+import Main from './components/Main.vue';
+import Store from './store.js';
 
 window.EVENT_BUS = new Vue({});
 
 new Vue({
   el: '#root',
-  render: h => h(Editor)
+  store: Store,
+  render: h => h(Main)
 });

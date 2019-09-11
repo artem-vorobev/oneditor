@@ -1,11 +1,16 @@
 <template>
   <ul v-show="opened">
-    <li v-if="isLoading" class="loading-indicator">
+    <li v-if="path == rootDir">
+      <button class="add-in-root" @click="add(path)">
+        <i class="fa fa-plus"></i>
+      </button>
+    </li>
+    <li v-if="loading" class="loading-indicator">
       <i class="fa fa-circle-o-notch fa-spin"></i>
     </li>
     <li v-for="file in files">
       <div v-if="file.isDirectory" class="filename">
-        <div :class="['folder', {'opened':file.isOpened}]" @click="toggleSubdir(file)">
+        <div :class="['folder', {'opened':isOpened(file.path)}]" @click="toggleDir(file.path)">
           {{file.name}}
         </div>
         <div class="fmgr-controls">
@@ -20,7 +25,7 @@
           </button>
         </div>
       </div>
-      <file-list v-if="file.isDirectory" :opened="file.isOpened" :directory="file.path"></file-list>
+      <file-list v-if="file.isDirectory" :path="file.path"></file-list>
       <div v-else class="filename">
         <div :class="['file-'+file.extension]" @click="open(file.path)">
           {{file.name}}
@@ -46,14 +51,13 @@ export default {
 
   name: 'file-list',
   props: {
-    opened: Boolean,
-    directory: String
+    path: String
   },
 
   data: function() {
     return {
-      isLoading: false,
-      isLoaded: false,
+      loading: false,
+      loaded: false,
       files: [],
     }
   },
@@ -71,57 +75,68 @@ export default {
     unlink: function(path) {
       EVENT_BUS.$emit('fmgr-unlink', path);
     },
+
+
     open: function(path) {
-      EVENT_BUS.$emit('fmgr-open', path);
+      this.$store.commit('OPEN_FILE', path);
     },
-    toggleSubdir: function(file) {
-      file.isOpened = !file.isOpened;
+    toggleDir: function(path) {
+      this.$store.commit('TOGGLE_DIR', path);
+    },
+    isOpened: function(path) {
+      return this.$store.state.openedDirs.indexOf(path) !== -1;
     },
     loadFiles: function() {
       var component = this;
       var xhr = new XMLHttpRequest();
       xhr.open('POST', window.location.href+'?fn=getfiles', true);
       xhr.onload = function() {
+        var files;
         try {
-          component.files = JSON.parse(xhr.responseText);
+          files = JSON.parse(xhr.responseText);
+          for (var i=0; i<files.length; i++) {
+            files[i].name = files[i].path.split('/').pop();
+            if (!files[i].isDirectory) {
+              files[i].extension = files[i].name.split('.').pop();
+            }
+          }
+          component.files = files;
         } catch(e) {
           component.files = [];
           xhr.onerror();
           return;
         }
-        component.isLoaded = true;
-        component.isLoading = false;
+        component.loaded = true;
+        component.loading = false;
       }
       xhr.onerror = function() {
         console.error(xhr.responseText);
-        component.isLoading = false;
+        component.loading = false;
       }
       var params = new FormData();
-      params.append('path', component.directory);
-      component.isLoading = true;
+      params.append('path', component.path);
+      component.loading = true;
       xhr.send(params);
     },
   },
 
+  computed: {
+    opened: function() {
+      return this.isOpened(this.path);
+    },
+    rootDir: function() {
+      return this.$store.state.rootDir;
+    }
+  },
+
   watch: {
     opened: function(newval) {
-      // var xhr = new XMLHttpRequest();
-      // xhr.open('POST', window.location.href+'?fn=opendir', true);
-      // xhr.onload = function() {
-      //   if (xhr.responseText != '') xhr.onerror();
-      // }
-      // xhr.onerror = function() {
-      //   console.error(xhr.responseText);
-      // }
-      // var params = new FormData();
-      // params.append('path', this.directory);
-      // xhr.send(params);
-      if (newval == true && !this.isLoaded) this.loadFiles();
+      if (newval == true && !this.loaded) this.loadFiles();
     }
   },
 
   created: function() {
-    if (this.opened && !this.isLoaded) this.loadFiles();
+    if (this.opened && !this.loaded) this.loadFiles();
   }
 }
 </script>

@@ -1,10 +1,10 @@
 <template>
-  <div :class="{'loading-indicator':isLoading, 'image-viewer':!isLoading}">
-    <span v-show="isLoading">
+  <div :class="{'loading-indicator':loading, 'image-viewer':!loading}">
+    <span v-show="loading">
       <i class="fa fa-circle-o-notch fa-spin"></i><br>
       Loading file "{{path}}"
     </span>
-    <img v-show="!isLoading" :src="url" :alt="path" @load="isLoading = false">
+    <img v-show="!loading" :src="url" :alt="path" @load="loading = false">
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   data: function() {
     return {
       url: '',
-      isLoading: true
+      loading: true
     };
   },
 

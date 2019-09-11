@@ -1,4 +1,12 @@
-<?php $state = [];
+<?php $state = [
+  'rootDir' => $_SERVER['DOCUMENT_ROOT'],
+  'openedDirs' => [
+    $_SERVER['DOCUMENT_ROOT']
+  ],
+  'openedFiles' => [],
+  'activeTab' => 0,
+  'unsavedChanges' => []
+];
 function writeState() {
   global $state;
   $str = file_get_contents(__FILE__);

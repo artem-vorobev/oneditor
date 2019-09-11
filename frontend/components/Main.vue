@@ -2,10 +2,7 @@
   <div id="wrap">
     <div id="aside">
       <div id="filemanager">
-        <button class="add-in-root" @click="addInRootClick">
-          <i class="fa fa-plus"></i>
-        </button>
-        <file-list :opened="true" :directory="rootDir"></file-list>
+        <file-list :path="rootDir"></file-list>
       </div>
       <div id="statusbar">
         Status bar
@@ -26,15 +23,12 @@ export default {
     'file-list': FileList,
     'editor-tabs': EditorTabs,
   },
-  data: function() {
-    return {
-      rootDir: ROOT_DIR
+  computed: {
+    rootDir: function() {
+      return this.$store.state.rootDir;
     }
   },
   methods: {
-    addInRootClick: function() {
-      EVENT_BUS.$emit('fmgr-add', ROOT_DIR);
-    },
     fmrgAdd: function(path) {
       alert('Add into '+path);
     },
