@@ -31,7 +31,7 @@ function loadMode(mode) {
 function loadText(path) {
   return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', window.location.href+'?fn=fread', true);
+    xhr.open('POST', window.location.href+'?fn=openfile', true);
     xhr.onload = function() {
       resolve(xhr.responseText);
     }

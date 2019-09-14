@@ -85,7 +85,10 @@ export default {
     loadFiles: function() {
       var component = this;
       var xhr = new XMLHttpRequest();
-      xhr.open('POST', window.location.href+'?fn=getfiles', true);
+      xhr.open('POST', window.location.href+'?fn=scandir', true);
+      var params = new FormData();
+      params.append('path', component.path);
+
       xhr.onload = function() {
         var files;
         try {
@@ -110,8 +113,6 @@ export default {
         console.error(xhr.responseText);
         component.loading = false;
       }
-      var params = new FormData();
-      params.append('path', component.path);
       component.loading = true;
       xhr.send(params);
     },

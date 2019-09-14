@@ -1,6 +1,6 @@
 <?php
   require('inc/state.php');
-  require('inc/functions.php');
+  require('inc/mutations.php');
   require('inc/api.php');
 ?>
 <!DOCTYPE html>
@@ -25,10 +25,6 @@
 </head>
 <body>
   <div id="root"></div>
-  <script>
-    window.STATE = <?=json_encode($state, true)?>;
-    window.DOCUMENT_ROOT = '<?=$_SERVER['DOCUMENT_ROOT']?>';
-  </script>
   <script src="/frontend/build/build.js"></script>
 </body>
 </html>
