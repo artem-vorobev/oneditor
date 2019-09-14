@@ -13,18 +13,19 @@ export default {
   
   name: 'image-viewer',
   props: {
-    path: String
+    index: Number
   },
 
   data: function() {
     return {
       url: '',
-      loading: true
+      loading: true,
+      path: this.$store.state.openedFiles[this.index],
     };
   },
 
   created: function() {
-    this.url = this.path.replace(ROOT_DIR, '');
+    this.url = this.path.replace(this.$store.state.rootDir, '');
   }
 
 }

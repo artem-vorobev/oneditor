@@ -63,19 +63,15 @@ export default {
   },
 
   methods: {
+
     add: function(path) {
-      EVENT_BUS.$emit('fmgr-add', path);
     },
     copy: function(path) {
-      EVENT_BUS.$emit('fmgr-copy', path);
     },
     rename: function(path) {
-      EVENT_BUS.$emit('fmgr-rename', path);
     },
     unlink: function(path) {
-      EVENT_BUS.$emit('fmgr-unlink', path);
     },
-
 
     open: function(path) {
       this.$store.commit('OPEN_FILE', path);
@@ -94,18 +90,19 @@ export default {
         var files;
         try {
           files = JSON.parse(xhr.responseText);
-          for (var i=0; i<files.length; i++) {
-            files[i].name = files[i].path.split('/').pop();
-            if (!files[i].isDirectory) {
-              files[i].extension = files[i].name.split('.').pop();
-            }
-          }
-          component.files = files;
         } catch(e) {
           component.files = [];
           xhr.onerror();
           return;
         }
+        for (var i=0; i<files.length; i++) {
+          files[i].name = files[i].path.split('/').pop();
+          if (!files[i].isDirectory) {
+            files[i].extension = files[i].name.split('.').pop();
+          }
+        }
+        component.$store.commit('SAVE_FILE_LIST', {path:component.path, list:files});
+        component.files = component.$store.state.fileLists[component.path];
         component.loaded = true;
         component.loading = false;
       }

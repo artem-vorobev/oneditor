@@ -47,11 +47,13 @@ function loadText(path) {
 export default {
   name: 'text-editor',
   props: {
-    path: String
+    index: Number
   },
 
   data: function() {
-    return {};
+    return {
+      path: this.$store.state.openedFiles[this.index],
+    };
   },
 
   created: function() {
@@ -91,15 +93,25 @@ export default {
           lineWrapping: true
         }
       );
-      // if (cm.keyMap.default == cm.keyMap.macDefault) {
-      //   cm.addKeyMap({'Cmd-S': component.save});
-      //   cm.addKeyMap({'Cmd-Shift-S': component.saveAs});
-      // } else {
-      //   cm.addKeyMap({'Ctrl-S': component.save});
-      //   cm.addKeyMap({'Ctrl-Shift-S': component.saveAs});
-      // }
+      if (CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault) {
+        cm.addKeyMap({'Cmd-S': component.save});
+        cm.addKeyMap({'Shift-Cmd-S': component.saveAs});
+      } else {
+        cm.addKeyMap({'Ctrl-S': component.save});
+        cm.addKeyMap({'Ctrl-Shift-S': component.saveAs});
+      }
     })
     .catch(e => console.dir(e));
+  },
+
+  methods: {
+    save: function() {
+      alert('save');
+    },
+
+    saveAs: function() {
+      alert('saveAs');
+    }
   }
 
 }

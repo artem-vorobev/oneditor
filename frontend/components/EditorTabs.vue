@@ -12,7 +12,7 @@
     </ul>
     <ul id="documents">
       <li v-for="(file, n) in files" :class="{'active': active == n}" :key="file">
-        <component :is="getViewerComponent(file)" :path="file"></component>
+        <component :is="getViewerComponent(file)" :index="n"></component>
       </li>
     </ul>
   </div>

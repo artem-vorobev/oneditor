@@ -27,6 +27,7 @@
   <div id="root"></div>
   <script>
     window.STATE = <?=json_encode($state, true)?>;
+    window.DOCUMENT_ROOT = '<?=$_SERVER['DOCUMENT_ROOT']?>';
   </script>
   <script src="/frontend/build/build.js"></script>
 </body>

@@ -23,30 +23,8 @@ export default {
     'file-list': FileList,
     'editor-tabs': EditorTabs,
   },
-  computed: {
-    rootDir: function() {
-      return this.$store.state.rootDir;
-    }
-  },
-  methods: {
-    fmrgAdd: function(path) {
-      alert('Add into '+path);
-    },
-    fmrgCopy: function(path) {
-      alert('Copy '+path);
-    },
-    fmrgRename: function(path) {
-      alert('Rename '+path);
-    },
-    fmrgDelete: function(path) {
-      alert('Delete '+path);
-    }
-  },
-  created: function() {
-    EVENT_BUS.$on('fmgr-add', this.fmrgAdd);
-    EVENT_BUS.$on('fmgr-copy', this.fmrgCopy);
-    EVENT_BUS.$on('fmgr-rename', this.fmrgRename);
-    EVENT_BUS.$on('fmgr-unlink', this.fmrgDelete);
+  data: function() {
+    return {rootDir: this.$store.state.rootDir};
   }
 }
 </script>

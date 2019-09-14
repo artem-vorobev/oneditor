@@ -1,6 +1,4 @@
-export default new Vuex.Store({
-  state: window.STATE,
-  /*
+/*
   The window.STATE structure.
   It contains main state of whole application. This structure is loaded from server and while editor is working Vuex is synchronizing it by calling mutations on server-side. Main idea is to continuously maintain state of application whenever page will be reloading.
 
@@ -9,8 +7,33 @@ export default new Vuex.Store({
   - openedFiles (array) paths to files which was opened in editor.
   - activeTab (int) index of tab in 'openedFiles' array.
   - unsavedChanges (object) keys are paths to files, values are text of these files edited previously, but not saved yet.
-  */
+*/
 
+function getState() {
+  var state;
+  if (Object.keys(window.STATE).length == 0) {
+    state = {
+      rootDir: window.DOCUMENT_ROOT,
+      openedDirs: [window.DOCUMENT_ROOT],
+      openedFiles: [],
+      activeTab: 0,
+      unsavedChanges: {}
+    }
+  } else {
+    state = window.STATE;
+  }
+
+  state = Object.assign(state, {
+    fileLists: {}
+  });
+
+  return state;
+}
+
+
+
+export default new Vuex.Store({
+  state: getState(),
   mutations: {
     'TOGGLE_DIR': function(state, path) {
       var index = state.openedDirs.indexOf(path);
@@ -42,6 +65,10 @@ export default new Vuex.Store({
       if (state.activeTab >= state.openedFiles.length && state.openedFiles.length > 0) {
         state.activeTab = state.openedFiles.length - 1;
       }
+    },
+
+    'SAVE_FILE_LIST': function(state, params) {
+      state.fileLists[params.path] = params.list;
     }
   },
 });
