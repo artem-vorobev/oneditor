@@ -37,7 +37,7 @@ export default {
         return this.$store.state.activeTab;
       },
       set: function(value) {
-        this.$store.commit('SET_ACTIVE_TAB', value);
+        this.$store.dispatch('SET_ACTIVE_TAB', value);
       }
     }
   },
@@ -65,7 +65,7 @@ export default {
       return path.split('/').pop();
     },
     closeTab: function(index) {
-      this.$store.commit('CLOSE_FILE', index);
+      this.$store.dispatch('CLOSE_FILE', index);
     }
   }
 }

@@ -74,10 +74,10 @@ export default {
     },
 
     open: function(path) {
-      this.$store.commit('OPEN_FILE', path);
+      this.$store.dispatch('OPEN_FILE', path);
     },
     toggleDir: function(path) {
-      this.$store.commit('TOGGLE_DIR', path);
+      this.$store.dispatch('TOGGLE_DIR', path);
     },
     isOpened: function(path) {
       return this.$store.state.openedDirs.indexOf(path) !== -1;
@@ -101,7 +101,7 @@ export default {
             files[i].extension = files[i].name.split('.').pop();
           }
         }
-        component.$store.commit('SAVE_FILE_LIST', {path:component.path, list:files});
+        component.$store.dispatch('SAVE_FILE_LIST', {path:component.path, list:files});
         component.files = component.$store.state.fileLists[component.path];
         component.loaded = true;
         component.loading = false;

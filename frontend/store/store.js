@@ -6,7 +6,7 @@
   - openedDirs (array) paths to directories which was opened in filemenager. At least contains rootDir value.
   - openedFiles (array) paths to files which was opened in editor.
   - activeTab (int) index of tab in 'openedFiles' array.
-  - unsavedChanges (object) keys are paths to files, values are text of these files edited previously, but not saved yet.
+  - unsavedTabs (array) indexes of tabs contains unsaved code.
 */
 
 function getState() {
@@ -31,7 +31,6 @@ function getState() {
 }
 
 
-
 export default new Vuex.Store({
   state: getState(),
   mutations: {
@@ -44,14 +43,12 @@ export default new Vuex.Store({
       }
     },
 
-    'OPEN_FILE': function(state, path) {
-      var index = state.openedFiles.indexOf(path);
-      if (index === -1) {
-        state.openedFiles.push(path);
-        state.activeTab = state.openedFiles.length - 1;
-      } else {
-        state.activeTab = index;
-      }
+    'ADD_OPENED_FILE': function(state, path) {
+      state.openedFiles.push(path);
+    },
+
+    'REMOVE_OPENED_FILE': function(state, index) {
+      state.openedFiles.splice(index, 1);
     },
 
     'SET_ACTIVE_TAB': function(state, index) {
@@ -60,15 +57,39 @@ export default new Vuex.Store({
       }
     },
 
-    'CLOSE_FILE': function(state, index) {
-      state.openedFiles.splice(index, 1);
-      if (state.activeTab >= state.openedFiles.length && state.openedFiles.length > 0) {
-        state.activeTab = state.openedFiles.length - 1;
-      }
-    },
-
     'SAVE_FILE_LIST': function(state, params) {
       state.fileLists[params.path] = params.list;
     }
   },
+
+  actions: {
+    'TOGGLE_DIR': function(context, path) {
+      context.commit('TOGGLE_DIR', path);
+    },
+
+    'OPEN_FILE': function(context, path) {
+      var index = context.state.openedFiles.indexOf(path);
+      if (index === -1) {
+        context.commit('ADD_OPENED_FILE', path);
+        context.commit('SET_ACTIVE_TAB', context.state.openedFiles.length - 1);
+      } else {
+        context.commit('SET_ACTIVE_TAB', index);
+      }
+    },
+
+    'CLOSE_FILE': function(context, index) {
+      context.commit('REMOVE_OPENED_FILE', index);
+      if (context.state.activeTab >= context.state.openedFiles.length && context.state.openedFiles.length > 0) {
+        context.commit('SET_ACTIVE_TAB', context.state.openedFiles.length - 1);
+      }
+    },
+
+    'SAVE_FILE_LIST': function(context, params) {
+      context.commit('SAVE_FILE_LIST', params);
+    },
+
+    'SET_ACTIVE_TAB': function(context, index) {
+      context.commit('SET_ACTIVE_TAB', index);
+    }
+  }
 });
