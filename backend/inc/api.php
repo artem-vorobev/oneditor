@@ -52,7 +52,6 @@ function api_savefile($p) {
 function api_openfile($p) {
   extract($p);
   return file_get_contents($path);
-  // TODO apply changes from $STATE
 }
 
 

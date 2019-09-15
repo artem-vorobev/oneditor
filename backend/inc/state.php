@@ -1,17 +1,4 @@
-<?php $STATE = array (
-  'rootDir' => '/www/oneditor.loc',
-  'openedDirs' => 
-  array (
-    0 => '/www/oneditor.loc',
-  ),
-  'openedFiles' => 
-  array (
-  ),
-  'activeTab' => 0,
-  'unsavedChanges' => 
-  array (
-  ),
-);
+<?php $STATE = [];
 function commit_state() {
   global $STATE;
   $str = file_get_contents(__FILE__);
