@@ -1,4 +1,5 @@
-<?php $STATE = [];
+<?php $STATE = array (
+);
 function commit_state() {
   global $STATE;
   $str = file_get_contents(__FILE__);
